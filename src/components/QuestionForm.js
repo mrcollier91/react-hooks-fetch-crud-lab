@@ -20,6 +20,23 @@ function QuestionForm(props) {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(formData);
+    const answers = Object.keys(formData).filter(key=>key.includes("answer")).map(key=>formData[key])
+    const updatedFormData = {
+      answers,
+      prompt: formData.prompt,
+      correctIndex: formData.correctIndex,
+    }
+    const options = {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedFormData),
+      method: "POST"
+    }
+    fetch("http://localhost:4000/questions", options)
+    .then(resp=>resp.json())
+    .then(data=>console.log(data))
   }
 
   return (
